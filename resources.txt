@@ -1,2 +1,5 @@
 Automatation:
 - https://www.pythonanywhere.com/
+
+https://docs.gspread.org/en/v5.2.0/api.html#gspread.worksheet.Worksheet.append_rows 
+

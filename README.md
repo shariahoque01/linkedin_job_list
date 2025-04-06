@@ -7,4 +7,7 @@ To make it true again: conda config --set auto_activate_base True
 python3 -m venv myvenv
 source myvenv/bin/activate
 deactivate
+
+-- to do:
+clean the data: html tag
 ```

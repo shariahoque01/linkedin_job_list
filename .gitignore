@@ -1,2 +1,4 @@
 .env
+service_acc_key.json
 myenv/
+myvenv/

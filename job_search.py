@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import requests
 from dotenv import load_dotenv
 import os
+import datetime
 
 load_dotenv()
 
@@ -16,10 +17,10 @@ def collect_clean_data():
     api = Linkedin("", "", cookies=cookie_jar)
     profile = api.get_profile('dummy-account-9a21aa201')
     # print(profile)
-    data = api.search_jobs(limit = 10, keywords = 'Data Engineer',listed_at = 86400)
+    data = api.search_jobs(limit = 20, keywords = 'Data',listed_at = 86400)
     original_df = pd.DataFrame(data)
     original_df['job_id'] = original_df['trackingUrn'].str.split(':').str[-1]
-    print(f'The original total API count: {original_df.shape}')
+    # print(f'The original total API count: {original_df.shape}')
     #Reshaping the dataframe
     df = original_df[['title', 'job_id', 'repostedJob']]
     #filtering title to only data engineer
@@ -30,10 +31,14 @@ def collect_clean_data():
     #dropping duplicates
     filtered_df2 = filtered_df2.drop_duplicates(subset=['job_id'], keep='first')
     #clean df
-    print(f'The clean data:{filtered_df2.shape}')
+    # print(f'The clean data:{filtered_df2.shape}')
     return filtered_df2['job_id']
 
 def job_data_scrape(job_id):
+  '''
+	This function uses beautifulsoup package to extract relevant information 
+  by searching with unique job_id from function collect_clean_data()
+	'''
   job_data2 = []
   for job_id_index in job_id:
     # Linkedin URL (api call)
@@ -87,6 +92,21 @@ def job_data_scrape(job_id):
   pd.set_option('display.max_colwidth', None)
   sample =  pd.DataFrame(job_data2)
   sample = sample.drop_duplicates()
-  target_job_data_df = sample[sample['Location'].astype(str).str.contains('NY|NJ|New York', na=False)]
-  return sample
+  #cleaning html tag
+  # sample['Clean Company Apply URL'] = sample['Company Apply URL'].str.extract(r'<!--"?(https?://[^">]+)"?-->')
+  # sample['Clean Location'] = sample['Location'].str.extract(r'>([^<]+)<')
 
+  #adding current date column
+  sample["Sys-DateTime"] = datetime.datetime.now()
+  
+  ''' Cleaning and Filtering'''
+  #converting to string for JSON effiecinet conversion
+  sample= sample.astype(str)
+  sample = sample[~sample['Company Name'].str.contains("Lensa|Jobs via Dice", case=False)]
+  sample['Company Apply URL'] = sample['Company Apply URL'].str.extract(r'<!--"?(https?://[^">]+)"?-->')
+  sample['Location'] = sample['Location'].str.extract(r'>([^<]+)<')
+  # target_job_data_df = sample[sample['Location'].astype(str).str.contains('NY|NJ|NEW Jersey|New York|Remote', na=False)]
+  # print("Type of my_dataframe:", type(sample))
+  sample= sample.fillna('')
+  sample = sample.reindex(columns=['Job ID', 'Title', 'Company Name','Location','Linkedin URL','Company Apply URL','Posted Days','Total Linkedin Applicants','Sys-DateTime'])
+  return sample
