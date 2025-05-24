@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install gspread google-auth pandas python-dotenv
+        pip install -r requirements.txt
         # Add any other dependencies your script needs
 
     - name: Add service account key

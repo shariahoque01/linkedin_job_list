@@ -4,3 +4,4 @@ requests
 linkedin-api
 python-dotenv
 gspread==3.6
+google-auth
