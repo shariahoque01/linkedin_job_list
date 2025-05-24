@@ -7,7 +7,7 @@ on:
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
-  update-sheet:
+  scrape:
     runs-on: ubuntu-latest
     
     steps:
@@ -22,19 +22,24 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install gspread google-auth pandas python-dotenv
+        # Add any other dependencies your script needs
 
     - name: Add service account key
       env:
         SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
-      run: |
-        echo "$SERVICE_ACCOUNT_KEY" > service_acc_key.json
-
-    - name: Add spreadsheet key
-      env:
         SPREADSHEET_KEY: ${{ secrets.SPREADSHEET_KEY }}
       run: |
+        echo "$SERVICE_ACCOUNT_KEY" > service_acc_key.json
         echo "open_by_key=$SPREADSHEET_KEY" > .env
+      
+    - name: Load LinkedIn cookies
+      env:
+        SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
+        JSESSIONID_COOKIE: ${{ secrets.JSESSIONID_COOKIE }}
+      run: |
+        echo "SESSION_COOKIE=$SESSION_COOKIE" >> $GITHUB_ENV
+        echo "JSESSIONID_COOKIE=$JSESSIONID_COOKIE" >> $GITHUB_ENV
 
-    - name: Run script
+    - name: Run scraper
       run: python main.py
