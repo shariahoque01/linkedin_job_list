@@ -2,3 +2,4 @@
 service_acc_key.json
 myenv/
 myvenv/
+__pycache__/
