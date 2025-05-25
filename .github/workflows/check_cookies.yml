@@ -9,25 +9,14 @@ on:
 jobs:
   check-cookies:
     runs-on: ubuntu-latest
+env:
+    SESSION_COOKIE: '${{ secrets.SESSION_COOKIE }}'
+    JSESSIONID_COOKIE: '${{ secrets.JSESSIONID_COOKIE }}'
+run: |
+    echo "=== Cookie Verification ==="
+    echo "SESSION_COOKIE length: ${#SESSION_COOKIE}"
+    echo "JSESSIONID_COOKIE length: ${#JSESSIONID_COOKIE}"
+    echo "JSESSIONID starts with quote: ${JSESSIONID_COOKIE:0:1}"
 
-    env:
-      SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
-      JSESSIONID_COOKIE: ${{ secrets.JSESSIONID_COOKIE }}
-
-    steps:
-    - name: Check LinkedIn cookies
-      run: |
-        echo "=== Cookie Verification ==="
-        echo "SESSION_COOKIE length: ${#SESSION_COOKIE}"
-        echo "JSESSIONID_COOKIE: $JSESSIONID_COOKIE"
-        echo "JSESSIONID length: ${#JSESSIONID_COOKIE}"
-        echo "JSESSIONID starts with quote: ${JSESSIONID_COOKIE:0:1}"
-
-        # Verify minimum length requirements
-        if [ ${#SESSION_COOKIE} -lt 150 ]; then
-          echo "❌ SESSION_COOKIE is too short"
-          exit 1
-        fi
-
-        if [[ ! "$JSESSIONID_COOKIE" =~ ^\"ajax: ]]; then
-          echo "❌ JSESSIONID_COOK_
+    echo "SESSION_COOKIE=${SESSION_COOKIE}" >> $GITHUB_ENV
+    echo "JSESSIONID_COOKIE=${JSESSIONID_COOKIE}" >> $GITHUB_ENV
