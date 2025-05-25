@@ -18,7 +18,9 @@ jobs:
       run: |
         echo "=== Cookie Verification ==="
         echo "SESSION_COOKIE length: ${#SESSION_COOKIE}"
+        echo "SESSION_COOKIE length: ${SESSION_COOKIE}"
         echo "JSESSIONID_COOKIE length: ${#JSESSIONID_COOKIE}"
+        echo "JSESSIONID_COOKIE length: ${JSESSIONID_COOKIE}"
         echo "JSESSIONID starts with quote: ${JSESSIONID_COOKIE:0:1}"
 
         # Optionally validate format or length
