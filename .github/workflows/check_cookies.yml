@@ -22,7 +22,8 @@ jobs:
         echo "JSESSIONID_COOKIE length: ${#JSESSIONID_COOKIE}"
         echo "JSESSIONID_COOKIE length: ${JSESSIONID_COOKIE}"
         echo "JSESSIONID starts with quote: ${JSESSIONID_COOKIE:0:1}"
-
+        echo "SESSION_COOKIE=${SESSION_COOKIE}" >> $GITHUB_ENV
+        echo "JSESSIONID_COOKIE=${JSESSIONID_COOKIE}" >> $GITHUB_ENV
         # Optionally validate format or length
         if [ ${#SESSION_COOKIE} -lt 150 ]; then
           echo "❌ SESSION_COOKIE is too short"
@@ -37,5 +38,4 @@ jobs:
         echo "✅ Cookies appear valid"
 
         # Export to GITHUB_ENV for later steps (if needed)
-        echo "SESSION_COOKIE=${SESSION_COOKIE}" >> $GITHUB_ENV
-        echo "JSESSIONID_COOKIE=${JSESSIONID_COOKIE}" >> $GITHUB_ENV
+
