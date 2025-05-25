@@ -1,22 +1,39 @@
 name: Verify LinkedIn cookies
 
 on:
-    schedule:
-      # Runs at 12:00 UTC every day
-      - cron: '10 23 * * *'
-    workflow_dispatch:   # Allows manual run from GitHub Actions tab
+  schedule:
+    # Runs at 11:10 PM UTC every day
+    - cron: '10 23 * * *'
+  workflow_dispatch:  # Allows manual run from GitHub Actions tab
 
 jobs:
   check-cookies:
     runs-on: ubuntu-latest
-env:
-    SESSION_COOKIE: '${{ secrets.SESSION_COOKIE }}'
-    JSESSIONID_COOKIE: '${{ secrets.JSESSIONID_COOKIE }}'
-run: |
-    echo "=== Cookie Verification ==="
-    echo "SESSION_COOKIE length: ${#SESSION_COOKIE}"
-    echo "JSESSIONID_COOKIE length: ${#JSESSIONID_COOKIE}"
-    echo "JSESSIONID starts with quote: ${JSESSIONID_COOKIE:0:1}"
 
-    echo "SESSION_COOKIE=${SESSION_COOKIE}" >> $GITHUB_ENV
-    echo "JSESSIONID_COOKIE=${JSESSIONID_COOKIE}" >> $GITHUB_ENV
+    steps:
+    - name: Verify LinkedIn cookies
+      env:
+        SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
+        JSESSIONID_COOKIE: ${{ secrets.JSESSIONID_COOKIE }}
+      run: |
+        echo "=== Cookie Verification ==="
+        echo "SESSION_COOKIE length: ${#SESSION_COOKIE}"
+        echo "JSESSIONID_COOKIE length: ${#JSESSIONID_COOKIE}"
+        echo "JSESSIONID starts with quote: ${JSESSIONID_COOKIE:0:1}"
+
+        # Optionally validate format or length
+        if [ ${#SESSION_COOKIE} -lt 150 ]; then
+          echo "❌ SESSION_COOKIE is too short"
+          exit 1
+        fi
+
+        if [[ ! "$JSESSIONID_COOKIE" =~ ^\"ajax: ]]; then
+          echo "❌ JSESSIONID_COOKIE has incorrect format"
+          exit 1
+        fi
+
+        echo "✅ Cookies appear valid"
+
+        # Export to GITHUB_ENV for later steps (if needed)
+        echo "SESSION_COOKIE=${SESSION_COOKIE}" >> $GITHUB_ENV
+        echo "JSESSIONID_COOKIE=${JSESSIONID_COOKIE}" >> $GITHUB_ENV
