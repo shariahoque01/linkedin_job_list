@@ -1,7 +1,10 @@
 name: Verify LinkedIn cookies
 
 on:
-  workflow_dispatch:  # Allows manual run from GitHub Actions tab
+    schedule:
+      # Runs at 12:00 UTC every day
+      - cron: '10 23 * * *'
+    workflow_dispatch:   # Allows manual run from GitHub Actions tab
 
 jobs:
   check-cookies:
