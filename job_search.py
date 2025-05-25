@@ -10,7 +10,8 @@ load_dotenv()
 
 def collect_clean_data():
     session_cookie = os.getenv('SESSION_COOKIE')
-    jsessionid_cookie = os.getenv('JSESSIOINID_COOKIE')
+    jsessionid_cookie = os.getenv('JSESSIONID_COOKIE')
+    # print(jsessionid_cookie)
     cookie_jar = requests.cookies.RequestsCookieJar()
     cookie_jar.set("li_at", session_cookie)
     cookie_jar.set("JSESSIONID", jsessionid_cookie)
