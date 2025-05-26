@@ -18,7 +18,7 @@ def collect_clean_data():
     api = Linkedin("", "", cookies=cookie_jar)
     profile = api.get_profile('dummy-account-9a21aa201')
     # print(profile)
-    data = api.search_jobs(limit = 20, keywords = 'Data Engineer',listed_at = 86400)
+    data = api.search_jobs(limit = 20, keywords = 'Data',listed_at = 86400)
     original_df = pd.DataFrame(data)
     original_df['job_id'] = original_df['trackingUrn'].str.split(':').str[-1]
     # print(f'The original total API count: {original_df.shape}')
@@ -26,7 +26,7 @@ def collect_clean_data():
     df = original_df[['title', 'job_id', 'repostedJob']]
     #filtering title to only data engineer
     #need to change it user input; options
-    filtered_df = df[~df['title'].str.contains("Manager|Lead|Principal|Sr|Senior|Director|II|III|Mid Level|Java|JAVA", case=False)]
+    filtered_df = df[~df['title'].str.contains("Manager|Lead|Principal|Sr|Senior|Director|II|III|Mid Level|Java|JAVA|Intern|Part Time|Coordinator|Clerk|Part-Time|Head|Entry", case=False)]
     #selecting only non-reposting job
     filtered_df2 = filtered_df[filtered_df['repostedJob'] == False]
     #dropping duplicates
@@ -62,8 +62,20 @@ def job_data_scrape(job_id):
     # print(application_url)
 
     #Days Posted Days
-    posted_days = soup.find(class_="posted-time-ago__text topcard__flavor--metadata")
-    posted_days = posted_days.text.strip() if posted_days else 'Less than 24 hours or other'
+    # posted_days = soup.find(class_="posted-time-ago__text topcard__flavor--metadata")
+    # posted_days = posted_days.text.strip() if posted_days else 'Less than 24 hours or other'
+    posted_days = (
+    soup.find(class_="posted-time-ago__text") or 
+    soup.find('time', class_="posted-time-ago__text") or
+    soup.find('span', {'aria-hidden': 'true'}, class_="topcard__flavor--metadata") or
+    soup.find('span', class_="posted-time-ago__text topcard__flavor--metadata")
+)
+    if posted_days:
+      days_posted = posted_days.get_text(strip=True)
+      posted_days = posted_days.get_text(strip=True)
+      # print(f"Posted: {days_posted}")
+    else:
+      print("Could not find posting time element")
     # print(posted_days)
 
     #Total Linkedin Applicants(clicks)
@@ -103,7 +115,7 @@ def job_data_scrape(job_id):
   ''' Cleaning and Filtering'''
   #converting to string for JSON effiecinet conversion
   sample= sample.astype(str)
-  sample = sample[~sample['Company Name'].str.contains("Lensa|Jobs via Dice", case=False)]
+  sample = sample[~sample['Company Name'].str.contains("Lensa|Jobs via Dice|TieTalent", case=False)]
   sample['Company Apply URL'] = sample['Company Apply URL'].str.extract(r'<!--"?(https?://[^">]+)"?-->')
   sample['Location'] = sample['Location'].str.extract(r'>([^<]+)<')
   # target_job_data_df = sample[sample['Location'].astype(str).str.contains('NY|NJ|NEW Jersey|New York|Remote', na=False)]

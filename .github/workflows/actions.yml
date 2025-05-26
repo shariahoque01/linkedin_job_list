@@ -42,4 +42,12 @@ jobs:
         echo "JSESSIONID_COOKIE=$JSESSIONID_COOKIE" >> $GITHUB_ENV
 
     - name: Run scraper
-      run: python main.py
+      run: python main.py | tee output.log
+
+    - name: Display record count
+      run: |
+        echo "Script output:"
+        cat output.log
+        echo "::group::Record Count Summary"
+        grep "Total Record" output.log || echo "No row count found"
+        echo "::endgroup::"

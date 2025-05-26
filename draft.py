@@ -1,15 +1,40 @@
+import gspread
+# from google.oauth2 import service_account
+from google.oauth2.service_account import Credentials
+from dotenv import load_dotenv
+from linkedinAPI import main_df
 import pandas as pd
+import os
 
-# Sample DataFrame with your HTML column
-df = pd.DataFrame({
-    'location_html': [
-        '<span class="sub-nav-cta__meta-text">Arlington, VA</span>',
-        '<span class="sub-nav-cta__meta-text">United States</span>',
-        '<span class="sub-nav-cta__meta-text">New York, NY</span>'
-    ]
-})
 
-# Extract location in one line
-df['clean_location'] = df['location_html'].str.extract(r'>([^<]+)<')
+load_dotenv()
 
-print(df[['location_html', 'clean_location']])
+SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
+
+credentials = Credentials.from_service_account_file(
+    'service_acc_key.json',
+    scopes=SCOPES
+)
+
+gc = gspread.authorize(credentials)
+
+print(credentials)
+
+
+try:
+    spreadsheet = gc.open_by_key(os.getenv('open_by_key'))
+    print(f"Successfully opened: {spreadsheet.title}")
+    worksheet = spreadsheet.sheet1
+    df = pd.DataFrame(worksheet.get_all_records())
+    print(df.dtypes)
+    df = df.drop_duplicates(subset=['Job ID'], keep='first')
+    data = [df.columns.values.tolist()] + df.values.tolist()
+    worksheet.clear()
+    worksheet.update('A1',data)
+    print(df.shape)
+    print(worksheet.row_values(1))
+except Exception as e:
+    print(f"Error: {str(e)}")
