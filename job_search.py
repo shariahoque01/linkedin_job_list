@@ -5,6 +5,7 @@ import requests
 from dotenv import load_dotenv
 import os
 import datetime
+import pytz
 
 load_dotenv()
 
@@ -18,6 +19,7 @@ def collect_clean_data():
     api = Linkedin("", "", cookies=cookie_jar)
     profile = api.get_profile('dummy-account-9a21aa201')
     # print(profile)
+    # today and yesterday data
     data = api.search_jobs(limit = 10000, keywords = 'Data',listed_at = 172800)
     original_df = pd.DataFrame(data)
     original_df['job_id'] = original_df['trackingUrn'].str.split(':').str[-1]
@@ -110,7 +112,7 @@ def job_data_scrape(job_id):
   # sample['Clean Location'] = sample['Location'].str.extract(r'>([^<]+)<')
 
   #adding current date column
-  sample["Sys-DateTime"] = datetime.datetime.now()
+  sample["Sys-DateTime"] = datetime.datetime.now(pytz.timezone('America/New_York'))
   
   ''' Cleaning and Filtering'''
   #converting to string for JSON effiecinet conversion
