@@ -56,7 +56,7 @@ try:
     worksheet.update('A1',data)
     #delete row
     # worksheet.delete_row(index=2)
-    print(f"::notice::Total jobs count in the sheet: {worksheet.row_count}")
+    # print(f"::notice::Total jobs count in the sheet: {worksheet.row_count}")
 
 except Exception as e:
     print(f"Error: {str(e)}")

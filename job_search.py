@@ -18,7 +18,7 @@ def collect_clean_data():
     api = Linkedin("", "", cookies=cookie_jar)
     profile = api.get_profile('dummy-account-9a21aa201')
     # print(profile)
-    data = api.search_jobs(limit = 1000, keywords = 'Data',listed_at = 259200)
+    data = api.search_jobs(limit = 10000, keywords = 'Data',listed_at = 172800)
     original_df = pd.DataFrame(data)
     original_df['job_id'] = original_df['trackingUrn'].str.split(':').str[-1]
     # print(f'The original total API count: {original_df.shape}')
@@ -26,7 +26,7 @@ def collect_clean_data():
     df = original_df[['title', 'job_id', 'repostedJob']]
     #filtering title to only data engineer
     #need to change it user input; options
-    filtered_df = df[~df['title'].str.contains("Manager|Lead|Principal|Sr|Senior|Director|II|III|Mid Level|Java|JAVA|Intern|Part Time|Coordinator|Clerk|Part-Time|Head|Entry", case=False)]
+    filtered_df = df[~df['title'].str.contains("Manager|Lead|Principal|Sr|Senior|Director|II|III|Mid Level|Java|JAVA|Intern|Part Time|Coordinator|Clerk|Part-Time|Head|Entry|Chief|President|VP", case=False)]
     #selecting only non-reposting job
     filtered_df2 = filtered_df[filtered_df['repostedJob'] == False]
     #dropping duplicates
