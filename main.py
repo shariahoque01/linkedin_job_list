@@ -25,7 +25,7 @@ print(credentials)
 
 result_df = main_df()
 row_count = len(result_df)
-print(f"::notice::Total rows processed today: {row_count}")  # GitHub Actions formatted output
+print(f"::notice::Total jobs processed on this run: {row_count}")  # GitHub Actions formatted output
 
 
 # print("Type of my_dataframe:", type(result_df))
