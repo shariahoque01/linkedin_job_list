@@ -2,8 +2,8 @@ name: Daily LinkedIn Job Update
 
 on:
   schedule:
-    # Runs at 12:00 UTC every day
-    - cron: '0 12 * * *'
+    # Runs at 2:00 pm every day
+    - cron: '0 14 * * *'
   workflow_dispatch:  # Allows manual triggering
 
 jobs:
@@ -41,13 +41,5 @@ jobs:
         echo "SESSION_COOKIE=$SESSION_COOKIE" >> $GITHUB_ENV
         echo "JSESSIONID_COOKIE=$JSESSIONID_COOKIE" >> $GITHUB_ENV
 
-    - name: Run scraper
-      run: python main.py | tee output.log
-
-    - name: Display record count
-      run: |
-        echo "Script output:"
-        cat output.log
-        echo "::group::Record Count Summary"
-        grep "Total Record" output.log || echo "No row count found"
-        echo "::endgroup::"
+    - name: Run main.py
+      run: python main.py

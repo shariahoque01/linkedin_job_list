@@ -25,29 +25,27 @@ print(credentials)
 
 result_df = main_df()
 row_count = len(result_df)
-print(f"::notice::Total rows processed: {row_count}")  # GitHub Actions formatted output
-print(f"Total rows: {row_count}") 
+print(f"::notice::Total rows processed today: {row_count}")  # GitHub Actions formatted output
 
 
 # print("Type of my_dataframe:", type(result_df))
 
 list_from_main_df = result_df.to_numpy().tolist()
-print(list_from_main_df)
 
 # print("Type of my_dataframe:", type(list_from_main_df))
 
 try:
     spreadsheet = gc.open_by_key(os.getenv('open_by_key'))
-    print(f"Successfully opened: {spreadsheet.title}")
+    # print(f"Successfully opened: {spreadsheet.title}")
     worksheet = spreadsheet.sheet1
-    ''' Logic 1 for gsspread:
+    ''' Logic 1 for gspread:
             inserting a new row from top from api
     '''
     values = list_from_main_df
     # print(values.count())
     worksheet.insert_rows(values, row=2, value_input_option='RAW')
     
-    ''' Logic2 for gsspread:
+    ''' Logic2 for gspread:
             deleting duplicates based on the unique job_id and keep the latest record
     '''
     df = pd.DataFrame(worksheet.get_all_records())
@@ -58,7 +56,9 @@ try:
     worksheet.update('A1',data)
     #delete row
     # worksheet.delete_row(index=2)
-    print(f"Total jobs count in the sheet: {worksheet.row_count}")
+    print(f"::notice::Total jobs count in the sheet: {worksheet.row_count}")
 
 except Exception as e:
     print(f"Error: {str(e)}")
+
+print(list_from_main_df)
