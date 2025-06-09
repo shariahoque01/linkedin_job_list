@@ -28,7 +28,7 @@ def collect_clean_data():
     df = original_df[['title', 'job_id', 'repostedJob']]
     #filtering title to only data engineer
     #need to change it user input; options
-    filtered_df = df[~df['title'].str.contains("Manager|Lead|Principal|Sr|Senior|Director|II|III|Mid Level|Java|JAVA|Intern|Part Time|Coordinator|Clerk|Part-Time|Head|Entry|Chief|President|VP", case=False)]
+    filtered_df = df[~df['title'].str.contains("Manager|Lead|Principal|Sr|Senior|Director|III|Mid|Java|JAVA|Intern|Part|Coordinator|Clerk|Head|Entry|Chief|President|VP", case=False)]
     #selecting only non-reposting job
     filtered_df2 = filtered_df[filtered_df['repostedJob'] == False]
     #dropping duplicates
