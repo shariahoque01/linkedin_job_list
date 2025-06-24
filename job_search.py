@@ -20,7 +20,7 @@ def collect_clean_data():
     profile = api.get_profile('dummy-account-9a21aa201')
     # print(profile)
     # today and yesterday data
-    data = api.search_jobs(limit = 10000, keywords = 'Data',listed_at = 172800)
+    data = api.search_jobs(limit = 10000, keywords = 'Data',listed_at = 129600)
     original_df = pd.DataFrame(data)
     original_df['job_id'] = original_df['trackingUrn'].str.split(':').str[-1]
     # print(f'The original total API count: {original_df.shape}')
