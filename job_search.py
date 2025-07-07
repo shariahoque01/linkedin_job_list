@@ -117,7 +117,7 @@ def job_data_scrape(job_id):
   ''' Cleaning and Filtering'''
   #converting to string for JSON effiecinet conversion
   sample= sample.astype(str)
-  sample = sample[~sample['Company Name'].str.contains("Lensa|Jobs via Dice|TieTalent", case=False)]
+  sample = sample[~sample['Company Name'].str.contains("Lensa|Jobs via Dice|TieTalent|Talentify.io|Jobot|TELUS Digital|TalentAlly|lumenalta|Cognizant|Tata Consultancy Services", case=False)]
   sample['Company Apply URL'] = sample['Company Apply URL'].str.extract(r'<!--"?(https?://[^">]+)"?-->')
   sample['Location'] = sample['Location'].str.extract(r'>([^<]+)<')
   # target_job_data_df = sample[sample['Location'].astype(str).str.contains('NY|NJ|NEW Jersey|New York|Remote', na=False)]
