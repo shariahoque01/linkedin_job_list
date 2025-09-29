@@ -3,3 +3,9 @@ Automatation:
 
 https://docs.gspread.org/en/v5.2.0/api.html#gspread.worksheet.Worksheet.append_rows 
 
+https://medium.com/@spaw.co/how-to-scrape-linkedin-using-beautifulsoup-98892420332f
+https://www.linkedin.com/legal/l/cookie-table#authentication https://linkedin-api.readthedocs.io/en/latest/key_concepts.html
+
+https://www.reddit.com/r/jobsearchhacks/comments/1jedoz0/linkedin_url_hacking_to_find_jobs_posted_less/
+
+https://github.com/linkedin-developers/linkedin-api-python-client
