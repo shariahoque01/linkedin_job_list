@@ -1,12 +1,12 @@
-# Linkedin API 
+# LinkedIn API 
 
 
 
-## job_search.py: 
-### collect_clean_data: <br>
+## 1. job_search.py: 
+### collect_clean_data(): <br>
 This function returns a list of unique LinkedIn job IDs by cleaning the raw job data: filtering job titles, removing reposted jobs, and dropping duplicates
 
-This script scrapes job data from linkedin api.
+This script scrapes job data from the LinkedIn API.
 1. Logs into LinkedIn API using cookies stored in environment variables
 2. Data Extraction: <br>
 function fetches LinkedIn jobs with the keyword "Data" posted within the last 36 hours, with a maximum limit of 10,000 results 
@@ -39,21 +39,27 @@ original_df['job_id'] = original_df['trackingUrn'].str.split(':').str[-1]
     filtered_df2 = filtered_df2.drop_duplicates(subset=['job_id'], keep='first')
 ```
 
-### job_data_scrape: <br>
+### job_data_scrape(): <br>
 scrapes LinkedIn job pages for details using job IDs, cleans the data, and returns it as a structured DataFrame
 1. 
 
 
 
-##linkedinAPI.py
-###Main_df:
-This function calls two 
+## 2. linkedinAPI.py
+### Main_df():
+Runs both functions, collect_clean_data and job_data_scrape, together to create a complete dataset of target job lists with information called sample2
 
+## 3. main.py:
+The script uses Google API authentication to write job data extracted from linkedinAPI.py into a Google Sheet, ensuring data deduplication
 
-### Miscellneous
+## 4. actions.yml:
+Path: .github/workflows/actions.yml
+This file contains a YAML-based GitHub Actions workflow that triggers automation
+
+### Miscellaneous: 
 1. To get out of conda base: conda config --set auto_activate_base False
 To make it true again: conda config --set auto_activate_base True
-2. activating vrtual env:
+2. activating virtual env:
 ```bash 
 python3 -m venv myvenv
 source myvenv/bin/activate
