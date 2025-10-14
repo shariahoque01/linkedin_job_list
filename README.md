@@ -45,7 +45,9 @@ scrapes LinkedIn job pages for details using job IDs, cleans the data, and retur
 
 
 
-
+##linkedinAPI.py
+###Main_df:
+This function calls two 
 
 
 ### Miscellneous
