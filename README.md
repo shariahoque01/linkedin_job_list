@@ -58,6 +58,9 @@ The script uses Google API authentication to write job data extracted from linke
 Path: .github/workflows/actions.yml
 This file contains a YAML-based GitHub Actions workflow that triggers automation
 
+# Final Product:
+https://docs.google.com/spreadsheets/d/1tk33s7cDus-1kPTsMZECGD7kocLNU5KfShpgV_wHrVg/edit?gid=0#gid=0 
+
 ### Miscellaneous: 
 1. To get out of conda base: conda config --set auto_activate_base False
 To make it true again: conda config --set auto_activate_base True
