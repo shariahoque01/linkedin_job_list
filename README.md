@@ -1,7 +1,9 @@
-# LinkedIn API 
+
+# System Design:
+<img width="579" height="532" alt="image" src="https://github.com/user-attachments/assets/9a7cc572-5f60-478e-a44d-59fff8c980cd" />
 
 
-
+# Description of the process:
 ## 1. job_search.py: 
 ### collect_clean_data(): <br>
 This function returns a list of unique LinkedIn job IDs by cleaning the raw job data: filtering job titles, removing reposted jobs, and dropping duplicates
