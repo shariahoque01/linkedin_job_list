@@ -69,8 +69,8 @@ To make it true again: conda config --set auto_activate_base True
 python3 -m venv myvenv
 source myvenv/bin/activate
 deactivate
-
--- to do:
-clean the data: html tag
-add more description
+```
+> [!NOTE]
+> The linkedin-api Python library is unofficial and has been discontinued as of October 2025.
+> To use the official LinkedIn API, visit LinkedIn’s Developer Documentation. Access is granted only to approved partners who meet LinkedIn’s eligibility requirements.
 ```
